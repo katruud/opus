@@ -91,6 +91,7 @@ jobs:
         config:          # use unix makefiles for iOS to avoid Xcode to complain about signing.
         - {
             name: "iOS/Dll/arm64/Release",
+            artifact_name: "iOS-Dll-arm64-Release",
             os: macos-latest,
             config: Release,
             args: -G "Unix Makefiles" -DBUILD_SHARED_LIBS=ON -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64
@@ -98,12 +99,14 @@ jobs:
           # use unix makefiles for iOS to avoid Xcode to complain about signing.
         - {
             name: "iOS/Framework/arm64/Release",
+            artifact_name: "iOS-Framework-arm64-Release",
             os: macos-latest,
             config: Release,
             args: -G "Unix Makefiles" -DBUILD_FRAMEWORK=ON -DCMAKE_INSTALL_PREFIX=install -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64
           }
         - {
             name: "iOS/Lib/arm64/Release",
+            artifact_name: "iOS-Lib-arm64-Release",
             os: macos-latest,
             config: Release,
             args: -G "Unix Makefiles" -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64
@@ -144,7 +147,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ replace(matrix.config.name, '/', '-') }}-artifacts
+          name: ${{ matrix.config.artifact_name }}-artifacts
           path: |
             build/**/*.a
             build/**/*.dylib
