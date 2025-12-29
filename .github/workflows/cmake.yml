@@ -36,7 +36,7 @@ jobs:
         working-directory: ./build
         run: ctest -j 2
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: cmake-3.16-build-ubuntu
@@ -71,7 +71,7 @@ jobs:
         working-directory: ./build
         run: cmake --build . -j 2 --config Release --target package
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mingw-windows-build
           path: |
@@ -142,7 +142,7 @@ jobs:
         working-directory: ./build
         run: ctest -j 2 -C ${{ matrix.config.config }} --output-on-failure
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.config.name }}-artifacts
           path: |
