@@ -35,6 +35,19 @@ jobs:
       - name: Test
         working-directory: ./build
         run: ctest -j 2
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cmake-3.16-build-ubuntu
+          path: |
+            build/**/*.a
+            build/**/*.so
+            build/**/*.dylib
+            build/**/opus*
+            build/**/*.tar.gz
+            build/**/*.zip
+          retention-days: 30
 
   CMakeMINGW:
     name: CMake MINGW
@@ -57,6 +70,17 @@ jobs:
       - name: Build
         working-directory: ./build
         run: cmake --build . -j 2 --config Release --target package
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: mingw-windows-build
+          path: |
+            build/**/*.exe
+            build/**/*.dll
+            build/**/*.lib
+            build/**/*.tar.gz
+            build/**/*.zip
+          retention-days: 30
 
   CMakeBuild:
     name: CMake/${{ matrix.config.name }}
@@ -117,3 +141,15 @@ jobs:
             contains(matrix.config.name, 'Linux') && !contains(matrix.config.name, 'ARM') && !contains(matrix.config.name, 'Dll')
         working-directory: ./build
         run: ctest -j 2 -C ${{ matrix.config.config }} --output-on-failure
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.config.name }}-artifacts
+          path: |
+            build/**/*.a
+            build/**/*.dylib
+            build/**/*.framework
+            build/**/*.tar.gz
+            build/**/*.zip
+            build/install/**
+          retention-days: 30
